@@ -1,6 +1,8 @@
 package stepDefinition;
 
-public class LoginSteps {
+import utils.DriverConfig;
+
+public class LoginSteps extends DriverConfig{
 
 	
 }

@@ -1,5 +1,11 @@
 package hooks;
 
-public class Hooks {
-//test2
+import utils.DriverConfig;
+
+public class Hooks extends DriverConfig{
+
+	
+	
+	
+	
 }
