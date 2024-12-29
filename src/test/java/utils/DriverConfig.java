@@ -25,11 +25,19 @@ instances for automated browser testing. It:
 
 public class DriverConfig {
 
-	// Logger for better control over logs
+	// A Logger instance is used for structured logging.
+	// It records informational messages and errors during browser setup and
+	// execution.
 	private static final Logger logger = Logger.getLogger(WebDriverManager.class.getName());
 
-	// ThreadLocal driver for thread safety in parallel execution
+	// ThreadLocal ensures that each thread running parallel tests gets its own WebDriver instance.
+	// This prevents interference between threads, making the code thread-safe.
 	private static final ThreadLocal<RemoteWebDriver> threadDriver = new ThreadLocal<>();
+
+	// Reads configuration values (like browser type and URL) from a
+	// config.properties file
+	// located in the test resources directory.
+	// Uses the Properties class to load key-value pairs
 	private static FileReader fileReader;
 	private static Properties properties;
 
@@ -47,7 +55,10 @@ public class DriverConfig {
 			properties = new Properties();
 			properties.load(fileReader);
 
-			// Initialize the browser based on the property file
+			// Determines the browser type (Chrome, Firefox, Edge) from the property file.
+			// Uses Bonigarcia’s WebDriverManager to dynamically download and set up the
+			// required WebDriver executable.
+			// Instantiates the appropriate browser-specific WebDriver.
 			String browser = properties.getProperty("Browser").toLowerCase();
 			RemoteWebDriver driver;
 			switch (browser) {
@@ -66,8 +77,9 @@ public class DriverConfig {
 			default:
 				throw new IllegalArgumentException("The browser " + browser + " is not supported.");
 			}
-
-			// Set the thread-local driver
+			
+			// Stores the initialized WebDriver instance in the thread-local variable to
+			// ensure thread-safe access.
 			threadDriver.set(driver);
 
 			// Maximize the browser window
@@ -94,7 +106,13 @@ public class DriverConfig {
 				fileReader.close();
 			}
 		}
-
 	}
-
+	
+	public void closeBrowser() {
+		if (getDriver() != null) {
+			getDriver().quit();
+			threadDriver.remove();
+			logger.info("Browser closed successfully.");
+		}
+	}
 }
