@@ -44,7 +44,7 @@ public class Hooks {
 			technicalReusables.waitUntilElementVisible(homePage.pageTitle, 10);
 			//Assert.assertEquals(homePage.pageTitle.getText(), "Automation Exercise");
 
-			logger.info("Successfully launched the application: Swag Labs");
+			logger.info("Successfully launched the application: Automation Exercise");
 
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Error in scenario setup: " + scenario.getName(), e);
